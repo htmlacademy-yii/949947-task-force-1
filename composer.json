@@ -1,0 +1,18 @@
+{
+    "name": "task-force/test",
+    "description": "test project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir Yakovlev",
+            "email": "mr.kollc@list.ru"
+        }
+    ],
+    "require": {},
+    "autoload": {
+      "psr-4": {
+        "Academy\\": "src/"
+      }
+    }
+  }
+
