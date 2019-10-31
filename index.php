@@ -4,12 +4,10 @@ use Academy\classes\Task;
 
 require_once './vendor/autoload.php';
 
-$idCustomer = 5;
-$idException = 6;
-$idInitiator = 5;
+$idCustomer = 1;
+$idException = 2;
+$idInitiator = 1;
 
 $task = new Task($idCustomer, $idException);
 
-var_dump($task->getNextStatus('finish'));
-
-//$task->getStatusList();
+var_dump($task->getNextStatus('cancel'));
