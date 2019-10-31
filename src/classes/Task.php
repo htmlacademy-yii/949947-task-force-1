@@ -48,11 +48,13 @@ class Task
      * @return string|null
      */
 
-    public function getNextStatus(string $action)
+    public function getNextStatus(string $action): ?string
     {
         if (isset(self::RELATIONS[$action])) {
+
             return self::RELATIONS[$action];
         }
+
         return null;
     }
 
@@ -61,7 +63,7 @@ class Task
      *
      * @return array
      */
-    public function getStatusList()
+    public function getStatusList(): array
     {
         return [
             self::STATUS_NEW,
@@ -77,17 +79,24 @@ class Task
      *
      * @return array
      */
-    public function getActionList()
+    public function getActionList(): array
     {
-        return [self::ACTION_NEW, self::ACTION_FAIL, self::ACTION_CANCEL, self::ACTION_START, self::ACTION_FINISH];
+        return [
+            self::ACTION_NEW,
+            self::ACTION_FAIL,
+            self::ACTION_CANCEL,
+            self::ACTION_START,
+            self::ACTION_FINISH
+        ];
     }
 
     /**
      *
      *определять список доступных действий, который зависит от: текущего статуса задания,роли пользователя,id пользователя.
      *
+     * @param int $idInitiator
      */
-    public function availableActions(int $initiator_id)
+    public function availableActions(int $idInitiator)
     {
 
     }

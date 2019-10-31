@@ -2,16 +2,14 @@
 
 use Academy\classes\Task;
 
-require_once 'vendor/autoload.php';
+require_once './vendor/autoload.php';
 
 $idCustomer = 5;
 $idException = 6;
+$idInitiator = 5;
 
-$initiator_id = 5;
 $task = new Task($idCustomer, $idException);
 
-var_dump($task->getNextStatus());
+var_dump($task->getNextStatus('finish'));
 
-$task->getStatusList();
-//var_dump($task -> getStatusList());
-//var_dump($task -> getActionList());
+//$task->getStatusList();
