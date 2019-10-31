@@ -50,12 +50,7 @@ class Task
 
     public function getNextStatus(string $action): ?string
     {
-        if (isset(self::RELATIONS[$action])) {
-
-            return self::RELATIONS[$action];
-        }
-
-        return null;
+        return self::RELATIONS[$action] ?? null;
     }
 
     /**
