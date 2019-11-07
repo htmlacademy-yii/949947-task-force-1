@@ -1,6 +1,6 @@
-CREATE DATABASE taskforce;
+CREATE DATABASE task_force;
 
-USE taskforce;
+USE task_force;
 -- --------------------------------------------------------
 
 --
@@ -8,8 +8,8 @@ USE taskforce;
 --
 
 CREATE TABLE `category` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  `name` int(11) NOT NULL
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `name`  varchar(255) NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -19,10 +19,10 @@ CREATE TABLE `category` (
 --
 
 CREATE TABLE `chat` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
   `message` text NOT NULL,
-  `senderId` int(11) NOT NULL,
-  `recipientId` int(11) NOT NULL
+  `sender_id` INT NOT NULL,
+  `recipient_id` INT NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -32,10 +32,10 @@ CREATE TABLE `chat` (
 --
 
 CREATE TABLE `comments` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
   `text` text NOT NULL,
-  `userId` int(11) NOT NULL,
-  `taskId` int(11) NOT NULL
+  `user_id` INT NOT NULL,
+  `task_id` INT NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -45,9 +45,9 @@ CREATE TABLE `comments` (
 --
 
 CREATE TABLE `contacts` (
-  `userId` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  `messagerName` int(11) NOT NULL,
-  `messageContacts` int(11) NOT NULL
+  `user_id` INT NOT NULL,
+  `messager_name` varchar(255) NOT NULL,
+  `message_contacts` varchar(255) NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -57,10 +57,9 @@ CREATE TABLE `contacts` (
 --
 
 CREATE TABLE `notifications_users` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  `userId` int(11) NOT NULL,
-  `messages` text NOT NULL,
-  `taskActionId` int(11) NOT NULL
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `messages` text NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -70,9 +69,9 @@ CREATE TABLE `notifications_users` (
 --
 
 CREATE TABLE `photo_works` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  `urlPhoto` varchar(255) NOT NULL,
-  `usersId` int(11) NOT NULL
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `path` varchar(255) NOT NULL,
+  `task_id` INT NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -82,7 +81,7 @@ CREATE TABLE `photo_works` (
 --
 
 CREATE TABLE `role` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255) NOT NULL
 );
 
@@ -93,13 +92,27 @@ CREATE TABLE `role` (
 --
 
 CREATE TABLE `task` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  `categoryId` int(11) NOT NULL,
-  `location` varchar(255) NOT NULL,
-  `budget` int(11) NOT NULL,
-  `dateFinish` date NOT NULL,
-  `remarks` varchar(255) NOT NULL,
-  `shortDescription` varchar(255) NOT NULL
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `category_id` INT NOT NULL,
+  `latitude` varchar(255) DEFAULT NULL,
+  `longitude` varchar(255) DEFAULT NULL,
+  `budget` INT DEFAULT NULL,
+  `date_finish` date DEFAULT NULL,
+  `short_description` varchar(255) NOT NULL,
+  `executor_id` INT NOT NULL,
+  `customer_id` INT NOT NULL
+);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `remarks`
+--
+CREATE TABLE `remarks` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `task_id` INT NOT NULL,
+  `remarks` varchar(255) NOT NULL
 );
 
 
@@ -108,17 +121,29 @@ CREATE TABLE `task` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(64) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `rating` int(11) NOT NULL,
-  `biography` text NOT NULL,
-  `avatar` varchar(255) NOT NULL,
-  `categoryId` int(11) NOT NULL,
-  `roleId` int(11) NOT NULL,
-  `location` varchar(255) NOT NULL
+  `rating` INT DEFAULT NULL,
+  `biography` text DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL ,
+  `latitude` varchar(255) DEFAULT NULL,
+  `longitude` varchar(255) DEFAULT NULL
 );
+
+--
+-- Структура таблицы `last_action_time`
+--
+
+CREATE TABLE `last_action_time` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `task_id` INT NOT NULL,
+  `last_action_time` DATETIME NOT NULL
+
+);
+
+-- --------------------------------------------------------
 
 
 --
@@ -126,5 +151,11 @@ CREATE TABLE `users` (
 --
 
 ALTER TABLE `users` ADD UNIQUE KEY `email_index` (`email`);
+
+--
+-- Индексы таблицы `contacts`
+--
+
+ALTER TABLE `contacts` ADD UNIQUE KEY `user_id` (`user_id`);
 
 
