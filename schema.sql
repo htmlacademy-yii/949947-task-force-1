@@ -94,12 +94,12 @@ CREATE TABLE `role` (
 CREATE TABLE `task` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `category_id` INT NOT NULL,
-  `latitude` varchar(255) DEFAULT NULL,
-  `longitude` varchar(255) DEFAULT NULL,
-  `budget` INT DEFAULT NULL,
-  `date_finish` date DEFAULT NULL,
+  `latitude` varchar(255),
+  `longitude` varchar(255),
+  `budget` INT,
+  `date_finish` date,
   `short_description` varchar(255) NOT NULL,
-  `executor_id` INT NOT NULL,
+  `executor_id` INT,
   `customer_id` INT NOT NULL
 );
 
@@ -125,11 +125,11 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(64) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `rating` INT DEFAULT NULL,
-  `biography` text DEFAULT NULL,
-  `avatar` varchar(255) DEFAULT NULL ,
-  `latitude` varchar(255) DEFAULT NULL,
-  `longitude` varchar(255) DEFAULT NULL
+  `rating` INT,
+  `biography` text,
+  `avatar` varchar(255) ,
+  `latitude` varchar(255),
+  `longitude` varchar(255)
 );
 
 --
