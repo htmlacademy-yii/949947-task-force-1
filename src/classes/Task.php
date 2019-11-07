@@ -4,7 +4,7 @@ namespace Academy\classes;
 
 use Exception;
 
-class taskStatus
+class Task
 {
     const STATUS_NEW = 'new';
     const STATUS_PROCESSING = 'processing';
