@@ -45,6 +45,7 @@ CREATE TABLE `comments` (
 --
 
 CREATE TABLE `contacts` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `messager_name` varchar(255) NOT NULL,
   `message_contacts` varchar(255) NOT NULL
