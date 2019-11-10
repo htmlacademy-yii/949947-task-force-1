@@ -17,10 +17,6 @@ class NewAction extends AbstractAction
      */
     static function checkRightsUsers(int $userId, Task $Task): bool
     {
-        if ($userId === $Task->getIdCustomer() and $Task->getCurrentStatus() === null) {
-            return true;
-        } else {
-            return false;
-        }
+        return $userId === $Task->getIdCustomer() && $Task->getCurrentStatus() === null;
     }
 }

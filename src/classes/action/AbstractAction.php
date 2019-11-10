@@ -36,6 +36,5 @@ abstract class AbstractAction
      * @return bool
      */
     abstract public static function checkRightsUsers(int $userId, Task $Task): bool;
-
 }
 

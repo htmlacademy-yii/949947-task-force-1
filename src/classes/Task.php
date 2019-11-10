@@ -28,7 +28,7 @@ class Task
 
     private $idExecutor;
     private $idCustomer;
-    private $status = null;//тк может быть и null , что бы отрабатовало действие ACTION_NEW
+    private $status;
     private $date;
 
     private const RELATIONS = [
@@ -129,13 +129,13 @@ class Task
      */
     public function availableActions(int $idInitiator): array
     {
-        $action_current = array();
+        $actionCurrent = array();
         foreach ($this->getActionList() as $action) {
             if ($action::checkRightsUsers($idInitiator, $this)) {
-                $action_current[] = $action::getInsideStaticName();
+                $actionCurrent[] = $action::getInsideStaticName();
             }
         }
 
-        return $action_current;
+        return $actionCurrent;
     }
 }

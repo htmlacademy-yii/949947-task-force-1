@@ -8,7 +8,6 @@ class StartAction extends AbstractAction
 {
     const INSIDE_NAME = 'started';
 
-
     /**
      * проверяет права пользователя
      *
@@ -18,6 +17,6 @@ class StartAction extends AbstractAction
      */
     static function checkRightsUsers(int $userId, Task $Task): bool
     {
-        return $Task->getCurrentStatus() === Task::STATUS_NEW and $userId === $Task->getIdExecutor();
+        return $Task->getCurrentStatus() === Task::STATUS_NEW && $userId === $Task->getIdExecutor();
     }
 }
