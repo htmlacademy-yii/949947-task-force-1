@@ -2,6 +2,11 @@
 
 namespace Academy\classes;
 
+use Academy\classes\action\CancelAction;
+use Academy\classes\action\NewAction;
+use Academy\classes\action\FailAction;
+use Academy\classes\action\StartAction;
+use Academy\classes\action\FinishAction;
 use Exception;
 
 class Task
@@ -12,18 +17,18 @@ class Task
     const STATUS_FINISHED = 'finished';
     const STATUS_FAILED = 'failed';
 
-    const ACTION_NEW = 'new';
-    const ACTION_FAIL = 'fail';
-    const ACTION_CANCEL = 'cancel';
-    const ACTION_START = 'start';
-    const ACTION_FINISH = "finish";
+    const ACTION_NEW = NewAction::class;
+    const ACTION_FAIL = FailAction::class;
+    const ACTION_CANCEL = CancelAction::class;
+    const ACTION_START = StartAction::class;
+    const ACTION_FINISH = FinishAction::class;
 
     const ROLE_EXECUTOR = 'executor';
     const ROLE_CUSTOMER = 'customer';
 
     private $idExecutor;
     private $idCustomer;
-    private $status = self::STATUS_NEW;
+    private $status = null;//тк может быть и null , что бы отрабатовало действие ACTION_NEW
     private $date;
 
     private const RELATIONS = [
@@ -86,13 +91,51 @@ class Task
     }
 
     /**
+     * Возвращает id заказчика
+     *
+     * @return int
+     */
+    public function getIdCustomer(): int
+    {
+        return $this->idCustomer;
+    }
+
+    /**
+     * Возвращает id исполнителя
+     *
+     * @return int
+     */
+    public function getIdExecutor(): ?int
+    {
+        return $this->idExecutor;
+    }
+
+    /**
+     * Возвращает текущий статус
+     *
+     * @return string|null
+     */
+    public function getCurrentStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
      *
      *определять список доступных действий, который зависит от: текущего статуса задания,роли пользователя,id пользователя.
      *
      * @param int $idInitiator
+     * @return array
      */
-    public function availableActions(int $idInitiator)
+    public function availableActions(int $idInitiator): array
     {
+        $action_current = array();
+        foreach ($this->getActionList() as $action) {
+            if ($action::checkRightsUsers($idInitiator, $this)) {
+                $action_current[] = $action::getInsideStaticName();
+            }
+        }
 
+        return $action_current;
     }
 }
