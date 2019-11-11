@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Academy\classes;
 
 use Academy\classes\action\CancelAction;
@@ -7,6 +9,7 @@ use Academy\classes\action\NewAction;
 use Academy\classes\action\FailAction;
 use Academy\classes\action\StartAction;
 use Academy\classes\action\FinishAction;
+use Academy\classes\exception\InvalidActionException;
 use Exception;
 
 class Task
@@ -51,10 +54,15 @@ class Task
      * @param string $action
      *
      * @return string|null
+     * @throws InvalidActionException
      */
 
     public function getNextStatus(string $action): ?string
     {
+        if (!in_array($action, self::RELATIONS)) {
+            throw new InvalidActionException('Такого действия нет!');
+        }
+
         return self::RELATIONS[$action] ?? null;
     }
 
