@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace Academy\classes;
 
 use Academy\classes\action\CancelAction;
@@ -7,6 +8,9 @@ use Academy\classes\action\NewAction;
 use Academy\classes\action\FailAction;
 use Academy\classes\action\StartAction;
 use Academy\classes\action\FinishAction;
+use Academy\classes\exception\ClassNameException;
+use Academy\classes\exception\ActionException;
+use Academy\classes\exception\FunctionNameException;
 use Exception;
 
 class Task
@@ -51,11 +55,16 @@ class Task
      * @param string $action
      *
      * @return string|null
+     * @throws ActionException
      */
 
     public function getNextStatus(string $action): ?string
     {
-        return self::RELATIONS[$action] ?? null;
+        if (in_array($action, self::RELATIONS)) {
+            return self::RELATIONS[$action] ?? null;
+        } else {
+            throw new ActionException('Такого действия нет!');
+        }
     }
 
     /**
@@ -126,11 +135,22 @@ class Task
      *
      * @param int $idInitiator
      * @return array
+     * @throws ClassNameException
+     * @throws FunctionNameException
      */
     public function availableActions(int $idInitiator): array
     {
         $actionCurrent = array();
         foreach ($this->getActionList() as $action) {
+            if (!class_exists($action)) {
+                throw new ClassNameException('Такой класс не существует!');
+            }
+            if (!method_exists($action, 'checkRightsUsers')) {
+                throw new FunctionNameException('Такая функция не существует');
+            }
+            if (!method_exists($action, 'getInsideStaticName')) {
+                throw new FunctionNameException('Такая функция не существует');
+            }
             if ($action::checkRightsUsers($idInitiator, $this)) {
                 $actionCurrent[] = $action::getInsideStaticName();
             }
