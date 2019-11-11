@@ -2,7 +2,7 @@
 
 namespace Academy\classes\exception;
 
-class FunctionNameException extends \Exception
+class InvalidActionException extends \Exception
 {
 
 }
