@@ -5,7 +5,6 @@ namespace Academy\classes\reader;
 use Academy\classes\exception\SourceFileException;
 use SplFileObject;
 
-
 class ReaderCsv
 {
     private $path;
@@ -20,96 +19,51 @@ class ReaderCsv
     }
 
     /**
-     * Возвращает первую строку из csv файла( имена столбцов)
+     * считывает данные из csv файла и записывает в sql файл в виде INSERT - запроса
      *
-     * @return string
+     * @return void
      * @throws SourceFileException
      */
-    private function getFirstLine(): string
+    public function csvSqlParser(): void
     {
-        $nameColumn = array();
-        $openSrcFile = fopen($this->path, 'r');
-
         if (!file_exists($this->path)) {
-            throw new SourceFileException("Файл не существует");
+            throw new SourceFileException('Такой файл отсутствует');
         }
 
-        if (!$openSrcFile) {
-            throw new SourceFileException("Не удалось открыть файл на чтение");
-        }
-
-        $firstLine = fgetcsv($openSrcFile, PHP_EOL);
-        foreach ($firstLine as $word) {
-            $nameColumn[] = '`' . $word . '`';
-        }
-        return implode($nameColumn, ' ,');
-    }
-
-    /**
-     * Возвращает имя таблицы
-     *
-     * @return string
-     */
-    private function getTableName(): string
-    {
-        $tableName = '`' . $this->dataTableName . '`';
-        return $tableName;
-    }
-
-    /**
-     * Возвращает информацию из csv файла ,которая будет заполняться в БД
-     *
-     * @return array
-     */
-    private function readCsv()
-    {
-        $result = array();
         $file = new SplFileObject($this->path);
+
+        if ($file->getExtension() != 'csv') {
+            throw new SourceFileException('Не верный формат файла');
+        }
+
+        if ($file->key() === 0) {
+            $columnName = $file->fgetcsv();//получили имя столбцов
+        }
+
+        $tableName = $this->dataTableName;// получили название таблицы
+
+        $result = array();
 
         while (!$file->eof()) {
 
             $result[] = $file->fgetcsv();
         }
-        array_shift($result);//удаляет первый элемент массива(первую строчку, которая явлеяется именами столбцов)
+
         array_pop($result);//удаляет последний пустой элемент массива
 
-        return $result;
-    }
+        $format = 'INSERT INTO `%1$s` (`%2$s`) VALUE(\'%3$s\');';
 
-    /**
-     * Возвращает массив с готовыми sql запросами на дамп информации в таблицу
-     *
-     * @return array
-     * @throws SourceFileException
-     */
-    private function creatSqlRequest()
-    {
         $sqlRequest = array();
-        foreach ($this->readCsv() as $line) {
-            $sqlRequest[] = "INSERT INTO " . $this->getTableName() . " (" . $this->getFirstLine() . ") " . " VALUES(" . "'" . implode($line,
-                    "','") . "'" . ")" . ";" . PHP_EOL;
+        foreach ($result as $line) {
+            $sqlRequest[] = sprintf($format, $tableName, implode($columnName, '`,`'), implode($line, '\',\''));
         }
 
-        return $sqlRequest;
-    }
+        $openFile = new SplFileObject($this->sqlPath, 'w');
 
-    /**
-     * Записывает запросы в файл sql
-     *
-     * @throws SourceFileException
-     */
-    public function writeSqlFile()
-    {
-
-        $openFile = fopen($this->sqlPath, 'w');
-        if (!file_exists($this->path)) {
-            throw new SourceFileException("Файл не существует");
+        if (!file_exists($this->sqlPath)) {
+            throw new SourceFileException('Такой файл отсутствует');
         }
 
-        if (!$openFile) {
-            throw new SourceFileException("Не удалось открыть файл на чтение");
-        }
-
-        fwrite($openFile, implode($this->creatSqlRequest()));
+        $openFile->fwrite(implode($sqlRequest, "\n"));
     }
 }

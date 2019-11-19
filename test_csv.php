@@ -5,14 +5,14 @@ use \Academy\classes\exception\SourceFileException;
 
 require_once './vendor/autoload.php';
 
-$path = 'D:\local\OSPanel\domains\localhost\data\cities.csv';
+$path = 'D:\local\OSPanel\domains\localhost\data\users.csv';
 $sqlPath = 'D:\local\OSPanel\domains\localhost\test.sql';
 
 
 $test = new ReaderCsv($path, $sqlPath);
 
 try {
-    $test->writeSqlFile();
+    $test->csvSqlParser();
 } catch (SourceFileException $e) {
     echo $e;
 }
