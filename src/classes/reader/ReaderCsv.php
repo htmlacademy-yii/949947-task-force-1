@@ -58,9 +58,9 @@ class ReaderCsv
                 }
                 , $value), ',');
 
-            $result_new = array_map(function ($item) {
+            $resultNew = array_map(function ($item) {
                 return "($item)";
-            }, $result);//добавляет скобки вокруг каждого value
+            }, $result);//добавляет скобки вокруг каждой строчки value
         }
 
         //array_pop($result);//удаляет последний пустой элемент массива
@@ -71,7 +71,7 @@ class ReaderCsv
             $format,
             $this->dataTableName,
             implode($columnNames, ','),
-            implode($result_new, ',' . PHP_EOL));
+            implode($resultNew, ',' . PHP_EOL));
 
         $openFile = new SplFileObject($this->sqlPath, 'w');
 
