@@ -37,26 +37,41 @@ class ReaderCsv
         }
 
         if ($file->key() === 0) {
-            $columnName = $file->fgetcsv();//получили имя столбцов
+            $columnNames = $file->fgetcsv();//получили имя столбцов
+            $columnNames = array_map(function ($value) {
+                return "`{$value}`";//ставит ковычки для каждого элемента массива
+            }, $columnNames);
         }
-
-        $tableName = $this->dataTableName;// получили название таблицы
-
-        $result = array();
 
         while (!$file->eof()) {
 
-            $result[] = $file->fgetcsv();
+            $checkLine = $file->fgetcsv();//проверка на пустую строку
+            if ($checkLine) {
+                $infoFile[] = $checkLine;
+            }
         }
 
-        array_pop($result);//удаляет последний пустой элемент массива
+        foreach ($infoFile as $value) {
+            $result[] = implode(array_map(
+                function ($value) {
+                    return "'{$value}'";//добавляет ковычки для каждого элемента массива
+                }
+                , $value), ',');
 
-        $format = 'INSERT INTO `%1$s` (`%2$s`) VALUE(\'%3$s\');';
-
-        $sqlRequest = array();
-        foreach ($result as $line) {
-            $sqlRequest[] = sprintf($format, $tableName, implode($columnName, '`,`'), implode($line, '\',\''));
+            $result_new = array_map(function ($item) {
+                return "($item)";
+            }, $result);//добавляет скобки вокруг каждого value
         }
+
+        //array_pop($result);//удаляет последний пустой элемент массива
+
+        $format = 'INSERT INTO `%1$s` (%2$s) VALUES %3$s;';
+
+        $sqlRequest[] = sprintf(
+            $format,
+            $this->dataTableName,
+            implode($columnNames, ','),
+            implode($result_new, ',' . PHP_EOL));
 
         $openFile = new SplFileObject($this->sqlPath, 'w');
 

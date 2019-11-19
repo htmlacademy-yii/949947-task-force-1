@@ -5,7 +5,7 @@ use \Academy\classes\exception\SourceFileException;
 
 require_once './vendor/autoload.php';
 
-$path = 'D:\local\OSPanel\domains\localhost\data\users.csv';
+$path = 'D:\local\OSPanel\domains\localhost\data\categories.csv';
 $sqlPath = 'D:\local\OSPanel\domains\localhost\test.sql';
 
 
