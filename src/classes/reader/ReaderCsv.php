@@ -52,11 +52,11 @@ class ReaderCsv
         }
 
         foreach ($infoFile as $value) {
-            $result[] = implode(array_map(
+            $result[] = implode(',', array_map(
                 function ($value) {
                     return "'{$value}'";//добавляет ковычки для каждого элемента массива
                 }
-                , $value), ',');
+                , $value));
 
             $resultNew = array_map(function ($item) {
                 return "($item)";
@@ -70,8 +70,8 @@ class ReaderCsv
         $sqlRequest[] = sprintf(
             $format,
             $this->dataTableName,
-            implode($columnNames, ','),
-            implode($resultNew, ',' . PHP_EOL));
+            implode(',', $columnNames),
+            implode(',' . PHP_EOL, $resultNew));
 
         $openFile = new SplFileObject($this->sqlPath, 'w');
 
@@ -79,6 +79,6 @@ class ReaderCsv
             throw new SourceFileException('Такой файл отсутствует');
         }
 
-        $openFile->fwrite(implode($sqlRequest, "\n"));
+        $openFile->fwrite(implode("\n", $sqlRequest));
     }
 }
