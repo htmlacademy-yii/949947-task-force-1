@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Academy\classes\action;
+namespace frontend\components\action;
 
-use Academy\classes\Task;
+use frontend\models\Task;
 
-class StartAction extends AbstractAction
+class RespondAction extends AbstractAction
 {
-    const INSIDE_NAME = 'started';
+    const INSIDE_NAME = 'respond';
 
     /**
      * проверяет права пользователя

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Academy\classes\action;
+namespace frontend\components\action;
 
-use Academy\classes\Task;
+use frontend\models\Task;
 
 abstract class AbstractAction
 {

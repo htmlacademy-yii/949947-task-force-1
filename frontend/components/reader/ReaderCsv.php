@@ -1,8 +1,8 @@
 <?php
 
-namespace Academy\classes\reader;
+namespace frontend\components\reader;
 
-use Academy\classes\exception\SourceFileException;
+use frontend\exception\SourceFileException;
 use SplFileObject;
 
 class ReaderCsv

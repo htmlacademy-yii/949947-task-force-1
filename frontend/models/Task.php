@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Academy\classes;
+namespace frontend\models;
 
-use Academy\classes\action\CancelAction;
-use Academy\classes\action\NewAction;
-use Academy\classes\action\FailAction;
-use Academy\classes\action\StartAction;
-use Academy\classes\action\FinishAction;
-use Academy\classes\exception\InvalidActionException;
+use frontend\components\action\CancelAction;
+use frontend\components\action\FailAction;
+use frontend\components\action\RespondAction;
+use frontend\components\action\FinishAction;
+use frontend\exception\InvalidActionException;
 use Exception;
+use frontend\helpers\AvailableActions;
 
 class Task
 {
@@ -19,12 +19,6 @@ class Task
     const STATUS_CANCELED = 'canceled';
     const STATUS_FINISHED = 'finished';
     const STATUS_FAILED = 'failed';
-
-    const ACTION_NEW = NewAction::class;
-    const ACTION_FAIL = FailAction::class;
-    const ACTION_CANCEL = CancelAction::class;
-    const ACTION_START = StartAction::class;
-    const ACTION_FINISH = FinishAction::class;
 
     const ROLE_EXECUTOR = 'executor';
     const ROLE_CUSTOMER = 'customer';
@@ -35,11 +29,10 @@ class Task
     private $date;
 
     private const RELATIONS = [
-        self::ACTION_NEW => self::STATUS_NEW,
-        self::ACTION_START => self::STATUS_PROCESSING,
-        self::ACTION_FINISH => self::STATUS_FINISHED,
-        self::ACTION_FAIL => self::STATUS_FAILED,
-        self::ACTION_CANCEL => self::STATUS_CANCELED,
+        AvailableActions::ACTION_RESPOND => self::STATUS_PROCESSING,
+        AvailableActions::ACTION_FINISH => self::STATUS_FINISHED,
+        AvailableActions::ACTION_FAIL => self::STATUS_FAILED,
+        AvailableActions::ACTION_CANCEL => self::STATUS_CANCELED,
     ];
 
     public function __construct(int $idCustomer, int $idExecutor)
@@ -59,7 +52,7 @@ class Task
 
     public function getNextStatus(string $action): ?string
     {
-        if (!in_array($action, self::RELATIONS)) {
+        if (!array_keys(self::RELATIONS, $action)) {
             throw new InvalidActionException('Такого действия нет!');
         }
 
@@ -79,22 +72,6 @@ class Task
             self::STATUS_CANCELED,
             self::STATUS_FINISHED,
             self::STATUS_FAILED
-        ];
-    }
-
-    /**
-     * Возвращает список действий
-     *
-     * @return array
-     */
-    public function getActionList(): array
-    {
-        return [
-            self::ACTION_NEW,
-            self::ACTION_FAIL,
-            self::ACTION_CANCEL,
-            self::ACTION_START,
-            self::ACTION_FINISH
         ];
     }
 
@@ -126,24 +103,5 @@ class Task
     public function getCurrentStatus(): ?string
     {
         return $this->status;
-    }
-
-    /**
-     *
-     *определять список доступных действий, который зависит от: текущего статуса задания,роли пользователя,id пользователя.
-     *
-     * @param int $idInitiator
-     * @return array
-     */
-    public function availableActions(int $idInitiator): array
-    {
-        $actionCurrent = array();
-        foreach ($this->getActionList() as $action) {
-            if ($action::checkRightsUsers($idInitiator, $this)) {
-                $actionCurrent[] = $action::getInsideStaticName();
-            }
-        }
-
-        return $actionCurrent;
     }
 }
