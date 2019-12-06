@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "comments".
@@ -12,7 +13,7 @@ use Yii;
  * @property int $user_id
  * @property int $task_id
  */
-class Comments extends \yii\db\ActiveRecord
+class Comments extends ActiveRecord
 {
     /**
      * {@inheritdoc}

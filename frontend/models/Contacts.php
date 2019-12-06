@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "contacts".
@@ -12,7 +13,7 @@ use Yii;
  * @property string $messager_name
  * @property string $message_contacts
  */
-class Contacts extends \yii\db\ActiveRecord
+class Contacts extends ActiveRecord
 {
     /**
      * {@inheritdoc}
