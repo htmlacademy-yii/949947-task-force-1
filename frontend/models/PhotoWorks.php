@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "photo_works".
@@ -11,7 +12,7 @@ use Yii;
  * @property string $path
  * @property int $task_id
  */
-class PhotoWorks extends \yii\db\ActiveRecord
+class PhotoWorks extends ActiveRecord
 {
     /**
      * {@inheritdoc}
