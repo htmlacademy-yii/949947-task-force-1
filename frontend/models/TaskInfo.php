@@ -3,7 +3,6 @@
 namespace frontend\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "task_info".
@@ -20,7 +19,7 @@ use yii\db\ActiveRecord;
  * @property string $latitude
  * @property string $longitude
  */
-class TaskInfo extends ActiveRecord
+class TaskInfo extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}

@@ -3,7 +3,6 @@
 namespace frontend\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "replies".
@@ -15,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $dt_add
  * @property int|null $rate
  */
-class Replies extends ActiveRecord
+class Replies extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}

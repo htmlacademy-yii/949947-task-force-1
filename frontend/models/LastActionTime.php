@@ -3,7 +3,6 @@
 namespace frontend\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "last_action_time".
@@ -12,7 +11,7 @@ use yii\db\ActiveRecord;
  * @property int $task_id
  * @property string $last_action_time
  */
-class LastActionTime extends ActiveRecord
+class LastActionTime extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
