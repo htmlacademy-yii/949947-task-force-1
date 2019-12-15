@@ -12,11 +12,12 @@ use yii\web\Response;
 
 
 /**
- * Site controller
+ * Class TasksController
+ *
+ * @package frontend\controllers
  */
 class TasksController extends Controller
 {
-    public $data;
 
     /**
      * Displays homepage.
@@ -25,8 +26,8 @@ class TasksController extends Controller
      */
     public function actionBrowse()
     {
-        $this->data = TaskInfo::find()->joinWith('categories')->asArray()->all();
+        $tasks = TaskInfo::find()->joinWith('categories')->all();
 
-        return $this->render('browse', ['data' => $this->data]);
+        return $this->render('browse', ['tasks' => $tasks]);
     }
 }

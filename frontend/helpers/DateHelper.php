@@ -2,10 +2,20 @@
 
 namespace frontend\helpers;
 
+/**
+ * Class DateHelper
+ * Вспомогательный класс для работы с датой и врвменем
+ *
+ * @package frontend\helpers
+ */
 class DateHelper
 {
-    public static function transferHours($date_add)
+    /**
+     * @param string $dateAdd
+     * @return float
+     */
+    public static function transferHours(string $dateAdd)
     {
-        return ceil((time() - strtotime($date_add)) / (3600));
+        return ceil((time() - strtotime($dateAdd)) / 3600);
     }
 }

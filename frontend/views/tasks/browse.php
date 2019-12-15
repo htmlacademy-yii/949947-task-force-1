@@ -1,16 +1,20 @@
 <?php
 
 use frontend\helpers\DateHelper;
+use  frontend\models\TaskInfo;
+use yii\web\View;
+
+/**
+ * @var View $this
+ * @var TaskInfo[] $tasks
+ */
 
 $this->title = 'TaskForce';
 ?>
 <section class="new-task">
     <div class="new-task__wrapper">
         <h1>Новые задания</h1>
-        <?php
-        foreach ($data as $item) {
-            ?>
-
+        <?php foreach ($tasks as $item) : ?>
             <div class="new-task__card">
                 <div class="new-task__title">
                     <a href="#" class="link-regular"><h2><?= $item['name']; ?></h2></a>
@@ -25,10 +29,7 @@ $this->title = 'TaskForce';
                 <p class="new-task__place"><?= $item['address']; ?></p>
                 <span class="new-task__time"><?= DateHelper::transferHours($item['dt_add']) ?> часа назад</span>
             </div>
-
-            <?php
-        }
-        ?>
+        <?php endforeach; ?>
     </div>
     <div class="new-task__pagination">
         <ul class="new-task__pagination-list">

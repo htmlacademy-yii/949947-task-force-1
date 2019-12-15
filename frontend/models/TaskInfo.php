@@ -65,6 +65,11 @@ class TaskInfo extends ActiveRecord
         ];
     }
 
+    /**
+     * Связь с таблицой категорий
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getCategories()
     {
         return $this->hasOne(Categories::class, ['id' => 'category_id']);
