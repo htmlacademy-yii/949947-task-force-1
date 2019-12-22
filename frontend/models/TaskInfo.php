@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "task_info".
@@ -68,7 +69,7 @@ class TaskInfo extends ActiveRecord
     /**
      * Связь с таблицой категорий
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCategories()
     {
