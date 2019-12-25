@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
  * This is the model class for table "categories".
  *
  * @property int $id
- * @property string $name
+ * @property string $name_category
  * @property string $en_name
  */
 class Categories extends ActiveRecord
@@ -28,8 +28,8 @@ class Categories extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'en_name'], 'required'],
-            [['name', 'en_name'], 'string', 'max' => 255],
+            [['name_category', 'en_name'], 'required'],
+            [['name_category', 'en_name'], 'string', 'max' => 255],
         ];
     }
 
@@ -40,7 +40,7 @@ class Categories extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name_category' => 'Name Category',
             'en_name' => 'En Name',
         ];
     }

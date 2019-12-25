@@ -4,11 +4,13 @@ namespace frontend\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "task_info".
  *
  * @property int $id
+ * @property string $name
  * @property int $category_id
  * @property int|null $budget
  * @property string|null $expire
@@ -36,10 +38,10 @@ class TaskInfo extends ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'description', 'customer_id', 'dt_add', 'latitude', 'longitude'], 'required'],
+            [['name', 'category_id', 'description', 'customer_id', 'dt_add', 'latitude', 'longitude'], 'required'],
             [['category_id', 'budget', 'executor_id', 'customer_id'], 'integer'],
             [['expire', 'dt_add'], 'safe'],
-            [['description', 'address', 'latitude', 'longitude'], 'string', 'max' => 255],
+            [['name', 'description', 'address', 'latitude', 'longitude'], 'string', 'max' => 255],
         ];
     }
 
@@ -50,6 +52,7 @@ class TaskInfo extends ActiveRecord
     {
         return [
             'id' => 'ID',
+            'name' => 'Name',
             'category_id' => 'Category ID',
             'budget' => 'Budget',
             'expire' => 'Expire',
@@ -62,4 +65,15 @@ class TaskInfo extends ActiveRecord
             'longitude' => 'Longitude',
         ];
     }
+
+    /**
+     * Связь с таблицой категорий
+     *
+     * @return ActiveQuery
+     */
+    public function getCategories()
+    {
+        return $this->hasOne(Categories::class, ['id' => 'category_id']);
+    }
+
 }
