@@ -44,4 +44,15 @@ class Categories extends ActiveRecord
             'en_name' => 'En Name',
         ];
     }
+
+    public static function getCategoriesList()
+    {
+        $categories = self::find()->all();
+
+        if (!$categories) {
+            return [];
+        }
+
+        return array_combine(array_column($categories, 'en_name'), array_column($categories, 'name_category'));
+    }
 }
