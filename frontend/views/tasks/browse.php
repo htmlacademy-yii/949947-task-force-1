@@ -1,8 +1,14 @@
 <?php
 
 use frontend\helpers\DateHelper;
-use  frontend\models\TaskInfo;
+use frontend\models\Categories;
+use frontend\models\TaskInfo;
 use yii\web\View;
+use yii\widgets\ActiveForm;
+use frontend\models\TaskFilter;
+use yii\widgets\ActiveField;
+use yii\helpers\Html;
+use frontend\helpers\CheckboxHelper;
 
 /**
  * @var View $this
@@ -44,36 +50,67 @@ $this->title = 'TaskForce';
 </section>
 <section class="search-task">
     <div class="search-task__wrapper">
-        <form class="search-task__form" name="test" method="post" action="#">
-            <fieldset class="search-task__categories">
-                <legend>Категории</legend>
-                <input class="visually-hidden checkbox__input" id="1" type="checkbox" name="" value="" checked>
-                <label for="1">Курьерские услуги </label>
-                <input class="visually-hidden checkbox__input" id="2" type="checkbox" name="" value="" checked>
-                <label for="2">Грузоперевозки </label>
-                <input class="visually-hidden checkbox__input" id="3" type="checkbox" name="" value="">
-                <label for="3">Переводы </label>
-                <input class="visually-hidden checkbox__input" id="4" type="checkbox" name="" value="">
-                <label for="4">Строительство и ремонт </label>
-                <input class="visually-hidden checkbox__input" id="5" type="checkbox" name="" value="">
-                <label for="5">Выгул животных </label>
-            </fieldset>
-            <fieldset class="search-task__categories">
-                <legend>Дополнительно</legend>
-                <input class="visually-hidden checkbox__input" id="6" type="checkbox" name="" value="">
-                <label for="6">Без исполнителя </label>
-                <input class="visually-hidden checkbox__input" id="7" type="checkbox" name="" value="" checked>
-                <label for="7">Удаленная работа </label>
-            </fieldset>
-            <label class="search-task__name" for="8">Период</label>
-            <select class="multiple-select input" id="8" size="1" name="time[]">
-                <option value="day">За день</option>
-                <option selected value="week">За неделю</option>
-                <option value="month">За месяц</option>
-            </select>
-            <label class="search-task__name" for="9">Поиск по названию</label>
-            <input class="input-middle input" id="9" type="search" name="q" placeholder="">
-            <button class="button" type="submit">Искать</button>
-        </form>
+        <?php $form = ActiveForm::begin(['options' => ['class' => 'search-task__form']]); ?>
+        <fieldset class="search-task__categories">
+            <legend>Категории</legend>
+
+            <?= $form->field($filter, 'categories')
+                ->checkboxList(Categories::getCategoriesList(), [
+                    'item' => function ($index, $label, $name, $checked, $value) {
+                        $id = "{$index}";
+                        return Html::checkbox($name, $checked,
+                                [
+                                    'id' => $id,
+                                    'class' => 'visually-hidden checkbox__input',
+                                    'value' => $value
+                                ]) . Html::label($label, $id);
+                    }
+                ])->label(false); ?>
+
+        </fieldset>
+        <fieldset class="search-task__categories">
+            <legend>Дополнительно</legend>
+
+            <?= $form->field($filter, 'withoutExecutor')
+                ->checkboxList(['withoutExecutor' => 'Без исполнителя'], [
+                    'item' => function ($index, $label, $name, $checked, $value) {
+                        return Html::checkbox($name, $checked,
+                                [
+                                    'id' => 10,
+                                    'class' => 'visually-hidden checkbox__input',
+                                    'value' => $value
+                                ]) . Html::label($label, 10);
+                    }
+                ])->label(false); ?>
+
+            <?= $form->field($filter, 'isRemote')
+                ->checkboxList(['isRemote' => 'Удаленная работа'], [
+                    'item' => function ($index, $label, $name, $checked, $value) {
+                        return Html::checkbox($name, $checked,
+                                [
+                                    'id' => 11,
+                                    'class' => 'visually-hidden checkbox__input',
+                                    'value' => $value
+                                ]) . Html::label($label, 11);
+                    }
+                ])->label(false); ?>
+        </fieldset>
+        <?= $form->field($filter, 'period', [
+            'template' => "{label}\n{input}",
+            'options' => ['tag' => false]
+        ])->dropDownList(TaskFilter::getPeriodList(),
+            ['class' => 'multiple-select input']
+        )->label('Период', ['class' => 'search-task__name']);
+
+        echo $form->field($filter, 'title', [
+            'template' => "{label}\n{input}",
+            'options' => ['tag' => false]
+        ])
+            ->textInput(['class' => 'input-middle input'])
+            ->label('Поиск по названию', ['class' => 'search-task__name']);
+
+        echo Html::submitButton('Искать', ['class' => 'button'])
+        ?>
+        <?php ActiveForm::end(); ?>
     </div>
 </section>
