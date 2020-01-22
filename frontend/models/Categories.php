@@ -45,7 +45,10 @@ class Categories extends ActiveRecord
         ];
     }
 
-    public static function getCategoriesList()
+    /**
+     * @return array|false
+     */
+    public static function getCategoriesList(): array
     {
         $categories = self::find()->all();
 
