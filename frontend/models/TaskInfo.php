@@ -2,9 +2,11 @@
 
 namespace frontend\models;
 
+use frontend\helpers\DateHelper;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
+use yii\db\Query;
 
 /**
  * This is the model class for table "task_info".
@@ -65,15 +67,4 @@ class TaskInfo extends ActiveRecord
             'longitude' => 'Longitude',
         ];
     }
-
-    /**
-     * Связь с таблицой категорий
-     *
-     * @return ActiveQuery
-     */
-    public function getCategories()
-    {
-        return $this->hasOne(Categories::class, ['id' => 'category_id']);
-    }
-
 }
