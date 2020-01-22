@@ -17,6 +17,9 @@ class TaskFilter extends Model
     public $period;
     public $title;
 
+    /**
+     * @return array
+     */
     public static function AttributeLabel()
     {
         return
@@ -29,6 +32,9 @@ class TaskFilter extends Model
             ];
     }
 
+    /**
+     * @return array
+     */
     public static function getPeriodList()
     {
         return [
