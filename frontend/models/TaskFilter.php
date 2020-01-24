@@ -48,6 +48,13 @@ class TaskFilter extends Model
         ];
     }
 
+    /**
+     * Функция фильтрует задания
+     *
+     * @param $query
+     * @param $filterResult
+     * @throws \Exception
+     */
     public function tasksFilter($query, $filterResult)
     {
         if (isset($filterResult['categories']) and !empty($filterResult['categories'])) {
