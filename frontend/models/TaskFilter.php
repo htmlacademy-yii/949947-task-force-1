@@ -24,7 +24,7 @@ class TaskFilter extends Model
     /**
      * @return array
      */
-    public static function AttributeLabel()
+    public static function AttributeLabel(): array
     {
         return
             [
@@ -39,7 +39,19 @@ class TaskFilter extends Model
     /**
      * @return array
      */
-    public static function getPeriodList()
+    public function rules(): array
+    {
+        return [
+            [['categories', 'withoutExecutor', 'isRemote', 'period', 'title'], 'safe']
+        ];
+    }
+
+    /**
+     * список периодов времени
+     *
+     * @return array
+     */
+    public static function getPeriodList(): array
     {
         return [
             self::PERIOD_DAY => 'День',
@@ -49,17 +61,18 @@ class TaskFilter extends Model
     }
 
     /**
-     * Функция фильтрует задания
+     * фильтрует задания
      *
-     * @param $query
      * @param $filterResult
+     * @return array
      * @throws \Exception
      */
-    public function tasksFilter($query, $filterResult)
+    public function tasksFilter($filterResult): array
     {
+        $query = TaskInfo::find()->joinwith(Categories::tableName());
         if (isset($filterResult['categories']) and !empty($filterResult['categories'])) {
             foreach ($filterResult['categories'] as $categories) {
-                $query->orWhere(['en_name' => $categories]);
+                $query->orWhere(['IN', 'en_name', $categories]);
             }
         }
         if ($filterResult['withoutExecutor']['0'] === 'withoutExecutor') {
@@ -81,5 +94,6 @@ class TaskFilter extends Model
         if (!empty($filterResult['title']) and isset($filterResult['title'])) {
             $query->andWhere(['name' => $filterResult['title']]);
         }
+        return $query->all();
     }
 }

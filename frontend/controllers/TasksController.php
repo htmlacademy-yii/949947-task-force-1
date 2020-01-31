@@ -5,8 +5,10 @@ namespace frontend\controllers;
 use DateInterval;
 use DateTime;
 use frontend\models\Categories;
+use frontend\models\Replies;
 use frontend\models\TaskInfo;
 use frontend\models\TaskFilter;
+use frontend\models\Users;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
@@ -31,18 +33,10 @@ class TasksController extends Controller
     public function actionBrowse()
     {
         $filterModel = new TaskFilter();
-
-        $query = new Query();
-        $query->select('*')->from(TaskInfo::tableName() . ' t')->join('JOIN',
-            Categories::tableName() . ' c',
-            't.category_id = c.id')->orderBy('dt_add DESC');
-
         if (Yii::$app->request->isPost) {
-            $filterModel->tasksFilter($query, Yii::$app->request->post('TaskFilter'));
+            $filterModel->load(Yii::$app->request->post());
         }
-
-        $taskQuery = $query->all();
-
+        $taskQuery = $filterModel->tasksFilter($filterModel);
         return $this->render('browse', ['tasks' => $taskQuery, 'filter' => $filterModel]);
     }
 }
