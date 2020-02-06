@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use frontend\helpers\DateHelper;
+use phpDocumentor\Reflection\Types\Object_;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
@@ -31,7 +32,7 @@ class TaskInfo extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'task_info';
+        return 'taskInfo';
     }
 
     /**
@@ -66,5 +67,47 @@ class TaskInfo extends ActiveRecord
             'latitude' => 'Latitude',
             'longitude' => 'Longitude',
         ];
+    }
+
+    /**
+     * Связь с таблицой категорий
+     *
+     * @return ActiveQuery
+     */
+    public function getCategories()
+    {
+        return $this->hasOne(Categories::class, ['id' => 'category_id']);
+    }
+
+    /**
+     * Связь с таблицой пользователей
+     *
+     * @return ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasOne(Users::class, ['id' => 'customer_id']);
+    }
+
+    /**
+     * Возвращает информацию о задание
+     *
+     * @param $id
+     * @return array|ActiveRecord|null
+     */
+    public static function getTaskInfo($id): ActiveRecord
+    {
+        return TaskInfo::find()->With(Categories::tableName())->where(['id' => (int)$id])->one();
+    }
+
+    /**
+     * Возвращает данные заказчика
+     *
+     * @param $id
+     * @return array|ActiveRecord|null
+     */
+    public static function getCostumer($id): ActiveRecord
+    {
+        return TaskInfo::find()->with(Users::tableName())->where(['id' => (int)$id])->one();
     }
 }
