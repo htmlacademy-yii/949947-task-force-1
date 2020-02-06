@@ -4,18 +4,28 @@ namespace frontend\helpers;
 
 /**
  * Class DateHelper
- * Вспомогательный класс для работы с датой и врвменем
+ * Вспомогательный класс для работы с датой и временем
  *
  * @package frontend\helpers
  */
 class DateHelper
 {
     /**
+     * Выводит время в относительном формате
+     * 
      * @param string $dateAdd
      * @return float
      */
-    public static function transferHours(string $dateAdd)
+    public static function transferDate(string $dateAdd)
     {
-        return ceil((time() - strtotime($dateAdd)) / 3600);
+        $dateInSecond = (time() - strtotime($dateAdd));//дата в секундах
+
+        if (($dateInSecond / 60) < 60) {
+            return floor($dateInSecond / 60) . ' минут';
+        } elseif (($dateInSecond / 3600) < 60) {
+            return floor($dateInSecond / 3600) . ' часов';
+        } else {
+            return floor($dateInSecond / (3600 * 24)) . ' дней';
+        }
     }
 }
