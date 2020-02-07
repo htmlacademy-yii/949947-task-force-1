@@ -63,36 +63,35 @@ class TaskFilter extends Model
     /**
      * фильтрует задания
      *
-     * @param $filterResult
      * @return array
      * @throws \Exception
      */
-    public function tasksFilter($filterResult): array
+    public function tasksFilter(): array
     {
         $query = TaskInfo::find()->joinwith(Categories::tableName());
-        if (isset($filterResult['categories']) and !empty($filterResult['categories'])) {
-            foreach ($filterResult['categories'] as $categories) {
-                $query->orWhere(['IN', 'en_name', $categories]);
+        if (isset($this->categories) and !empty($this->categories)) {
+            foreach ($this->categories as $categories) {
+                $query->orWhere(['IN', 'categories.id', $categories]);
             }
         }
-        if ($filterResult['withoutExecutor']['0'] === 'withoutExecutor') {
+        if ($this->withoutExecutor['0'] === 'withoutExecutor') {
             $query->andWhere(['executor_id' => null]);
         }
 
-        if ($filterResult['isRemote']['0'] === 'isRemote') {
+        if ($this->isRemote['0'] === 'isRemote') {
             $query->andWhere(['longitude' => null])->andWhere(['latitude' => null]);
         }
 
-        if (isset($filterResult['period'])) {
+        if (isset($this->period)) {
             $date = new DateTime();
             $dateCurrent = new DateTime('now');
-            $date->sub(new DateInterval("P" . $filterResult['period'] . "D"));
+            $date->sub(new DateInterval("P" . $this->period . "D"));
             $query->andWhere(['>=', 'dt_add', $date->format('Y-m-d')]);
             $query->andWhere(['<=', 'dt_add', $dateCurrent->format('Y-m-d')]);
         }
 
-        if (!empty($filterResult['title']) and isset($filterResult['title'])) {
-            $query->andWhere(['name' => $filterResult['title']]);
+        if (!empty($this->title) and isset($this->title)) {
+            $query->andWhere(['name' => $this->title]);
         }
         return $query->all();
     }

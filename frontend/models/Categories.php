@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "categories".
@@ -56,6 +57,6 @@ class Categories extends ActiveRecord
             return [];
         }
 
-        return array_combine(array_column($categories, 'en_name'), array_column($categories, 'name_category'));
+        return ArrayHelper::map($categories, 'id', 'name_category');
     }
 }

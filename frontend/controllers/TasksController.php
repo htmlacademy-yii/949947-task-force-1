@@ -36,7 +36,7 @@ class TasksController extends Controller
         if (Yii::$app->request->isPost) {
             $filterModel->load(Yii::$app->request->post());
         }
-        $taskQuery = $filterModel->tasksFilter($filterModel);
+        $taskQuery = $filterModel->tasksFilter();
         return $this->render('browse', ['tasks' => $taskQuery, 'filter' => $filterModel]);
     }
 }
