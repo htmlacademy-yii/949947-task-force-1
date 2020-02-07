@@ -12,7 +12,7 @@ class DateHelper
 {
     /**
      * Выводит время в относительном формате
-     * 
+     *
      * @param string $dateAdd
      * @return float
      */
