@@ -82,7 +82,7 @@ class TaskFilter extends Model
             $query->andWhere(['longitude' => null])->andWhere(['latitude' => null]);
         }
 
-        if (isset($this->period)) {
+        if ($this->period) {
             $date = new DateTime();
             $dateCurrent = new DateTime('now');
             $date->sub(new DateInterval("P" . $this->period . "D"));
