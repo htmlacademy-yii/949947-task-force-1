@@ -32,35 +32,40 @@ class Users extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            [['email', 'password', 'name', 'latitude', 'longitude', 'dt_add'], 'required'],
+            [['email', 'password', 'name_user', 'name_city'], 'safe'],
+            [
+                ['email', 'password', 'name_user', 'name_city'],
+                'required',
+                'message' => 'Это поле должно быть заполненно'
+            ],
             [['rating'], 'integer'],
             [['biography'], 'string'],
-            [['dt_add'], 'safe'],
-            [['email', 'name', 'avatar', 'latitude', 'longitude'], 'string', 'max' => 255],
-            [['password'], 'string', 'max' => 64],
-            [['email'], 'unique'],
+            [['dt_add_user'], 'safe'],
+            [['email', 'name_user', 'avatar'], 'string', 'max' => 255],
+            ['password', 'string', 'min' => 8, 'message' => 'Пароль должен быть больше 8 символов'],
+            ['email', 'email', 'message' => 'Введите валидный адрес электронной почты'],
+            ['email', 'unique', 'message' => 'Такой адрес электронной почты уже зарегестрирован'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
             'email' => 'Email',
             'password' => 'Password',
-            'name' => 'Name',
+            'name_user' => 'Name User',
             'rating' => 'Rating',
             'biography' => 'Biography',
             'avatar' => 'Avatar',
-            'latitude' => 'Latitude',
-            'longitude' => 'Longitude',
-            'dt_add' => 'Dt Add',
+            'dt_add_user' => 'Dt Add User',
+            'name_city' => 'Name City'
         ];
     }
 }
