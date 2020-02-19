@@ -63,7 +63,6 @@ class TaskFilter extends Model
     /**
      * фильтрует задания
      *
-     * @param $filterResult
      * @return array
      * @throws \Exception
      */
