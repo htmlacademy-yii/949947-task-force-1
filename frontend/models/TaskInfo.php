@@ -97,7 +97,7 @@ class TaskInfo extends ActiveRecord
      */
     public static function getTaskInfo($id): ActiveRecord
     {
-        return TaskInfo::find()->With(Categories::tableName())->where(['id' => (int)$id])->one();
+        return self::find()->With(Categories::tableName())->where(['id' => (int)$id])->one();
     }
 
     /**
@@ -108,6 +108,6 @@ class TaskInfo extends ActiveRecord
      */
     public static function getCostumer($id): ActiveRecord
     {
-        return TaskInfo::find()->with(Users::tableName())->where(['id' => (int)$id])->one();
+        return self::find()->with(Users::tableName())->where(['id' => (int)$id])->one();
     }
 }

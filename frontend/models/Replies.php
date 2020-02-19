@@ -80,6 +80,6 @@ class Replies extends ActiveRecord
      */
     public static function getReplies($id): array
     {
-        return Replies::find()->joinWith(Users::tableName())->joinWith(TaskInfo::tableName())->where(['TaskInfo.id' => $id])->all();
+        return self::find()->joinWith(Users::tableName())->joinWith(TaskInfo::tableName())->where(['TaskInfo.id' => $id])->all();
     }
 }

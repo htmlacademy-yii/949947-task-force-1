@@ -17,6 +17,8 @@ use yii\web\Response;
 
 
 /**
+ * Контроллер для просмотра заданий
+ *
  * Class TasksController
  *
  * @package frontend\controllers
@@ -39,6 +41,21 @@ class TasksController extends Controller
         $taskQuery = $filterModel->tasksFilter();
 
         return $this->render('browse', ['tasks' => $taskQuery, 'filter' => $filterModel]);
+    }
+
+    /**
+     * Действие показыающее информацию о задание
+     *
+     * @param $id
+     * @return string
+     */
+    public function actionView($id)
+    {
+        $task = TaskInfo::getTaskInfo($id);
+        $customer = TaskInfo::getCostumer($id);
+        $replies = Replies::getReplies($id);
+
+        return $this->render('view', ['task' => $task, 'replies' => $replies, 'customer' => $customer['users']]);
     }
 }
 
