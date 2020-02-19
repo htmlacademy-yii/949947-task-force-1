@@ -11,9 +11,9 @@ use yii\db\ActiveQuery;
 class TaskFilter extends Model
 {
 
-    const PERIOD_DAY = '1';
-    const PERIOD_WEEK = '7';
-    const PERIOD_MONTH = '30';
+    const PERIOD_DAY = 1;
+    const PERIOD_WEEK = 7;
+    const PERIOD_MONTH = 30;
 
     public $categories;
     public $withoutExecutor;
@@ -63,22 +63,23 @@ class TaskFilter extends Model
     /**
      * фильтрует задания
      *
+     * @param $filterResult
      * @return array
      * @throws \Exception
      */
     public function tasksFilter(): array
     {
         $query = TaskInfo::find()->joinwith(Categories::tableName());
-        if (isset($this->categories) and !empty($this->categories)) {
+        if ($this->categories) {
             foreach ($this->categories as $categories) {
                 $query->orWhere(['IN', 'categories.id', $categories]);
             }
         }
-        if ($this->withoutExecutor['0'] === 'withoutExecutor') {
+        if ($this->withoutExecutor) {
             $query->andWhere(['executor_id' => null]);
         }
 
-        if ($this->isRemote['0'] === 'isRemote') {
+        if ($this->isRemote) {
             $query->andWhere(['longitude' => null])->andWhere(['latitude' => null]);
         }
 
@@ -90,7 +91,7 @@ class TaskFilter extends Model
             $query->andWhere(['<=', 'dt_add', $dateCurrent->format('Y-m-d')]);
         }
 
-        if (!empty($this->title) and isset($this->title)) {
+        if ($this->title) {
             $query->andWhere(['name' => $this->title]);
         }
         return $query->all();

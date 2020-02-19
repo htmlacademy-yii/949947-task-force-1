@@ -47,16 +47,14 @@ class Categories extends ActiveRecord
     }
 
     /**
+     * Возвращает список возможных категорий
+     *
      * @return array|false
      */
     public static function getCategoriesList(): array
     {
         $categories = self::find()->all();
 
-        if (!$categories) {
-            return [];
-        }
-
-        return ArrayHelper::map($categories, 'id', 'name_category');
+        return $categories ? ArrayHelper::map($categories, 'id', 'name_category') : [];
     }
 }
