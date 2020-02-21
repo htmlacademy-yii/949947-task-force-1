@@ -69,7 +69,7 @@ class TaskFilter extends Model
      */
     public function tasksFilter(): array
     {
-        $query = TaskInfo::find()->joinwith(Categories::tableName());
+        $query = TaskInfo::find()->joinWith('category');
         if ($this->categories) {
             foreach ($this->categories as $categories) {
                 $query->orWhere(['IN', 'categories.id', $categories]);
@@ -84,7 +84,7 @@ class TaskFilter extends Model
         }
 
         if ($this->period) {
-            $query->andWhere(['>=', 'dt_add', new Expression('NOW()-INTERVAL ' . $this->period . ' DAY')]);
+            $query->andWhere(['>=', 'dt_add', new Expression("NOW()-INTERVAL {$this->period} DAY")]);
         }
 
         if ($this->title) {

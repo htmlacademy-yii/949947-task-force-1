@@ -3,14 +3,13 @@
 namespace frontend\models;
 
 use frontend\helpers\DateHelper;
-use phpDocumentor\Reflection\Types\Object_;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 use yii\db\Query;
 
 /**
- * This is the model class for table "task_info".
+ * This is the model class for table "taskinfo".
  *
  * @property int $id
  * @property string $name
@@ -24,6 +23,7 @@ use yii\db\Query;
  * @property string|null $address
  * @property string $latitude
  * @property string $longitude
+ * @property Categories $category
  */
 class TaskInfo extends ActiveRecord
 {
@@ -74,7 +74,7 @@ class TaskInfo extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getCategories()
+    public function getCategory()
     {
         return $this->hasOne(Categories::class, ['id' => 'category_id']);
     }

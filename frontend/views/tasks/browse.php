@@ -23,17 +23,17 @@ $this->title = 'TaskForce';
         <?php foreach ($tasks as $item) : ?>
             <div class="new-task__card">
                 <div class="new-task__title">
-                    <a href="#" class="link-regular"><h2><?= $item['name']; ?></h2></a>
-                    <a class="new-task__type link-regular" href="#"><p><?= $item['categories']['name_category']; ?></p>
+                    <a href="#" class="link-regular"><h2><?= $item->name; ?></h2></a>
+                    <a class="new-task__type link-regular" href="#"><p><?= $item->category->name_category; ?></p>
                     </a>
                 </div>
                 <div class="new-task__icon new-task__icon--translation"></div>
                 <p class="new-task_description">
                     <?= $item['description']; ?>
                 </p>
-                <b class="new-task__price new-task__price--translation"><?= $item['budget']; ?><b> ₽</b></b>
-                <p class="new-task__place"><?= $item['address']; ?></p>
-                <span class="new-task__time"><?= DateHelper::transferHours($item['dt_add']) ?> часа назад</span>
+                <b class="new-task__price new-task__price--translation"><?= $item->budget; ?><b> ₽</b></b>
+                <p class="new-task__place"><?= $item->address; ?></p>
+                <span class="new-task__time"><?= DateHelper::transferHours($item->dt_add) ?> часа назад</span>
             </div>
         <?php endforeach; ?>
     </div>
