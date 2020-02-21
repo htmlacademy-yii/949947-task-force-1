@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use frontend\helpers\DateHelper;
+use phpDocumentor\Reflection\Types\Object_;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
@@ -31,7 +32,7 @@ class TaskInfo extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'task_info';
+        return 'taskInfo';
     }
 
     /**
@@ -66,5 +67,15 @@ class TaskInfo extends ActiveRecord
             'latitude' => 'Latitude',
             'longitude' => 'Longitude',
         ];
+    }
+
+    /**
+     * Связь с таблицой категорий
+     *
+     * @return ActiveQuery
+     */
+    public function getCategories()
+    {
+        return $this->hasOne(Categories::class, ['id' => 'category_id']);
     }
 }

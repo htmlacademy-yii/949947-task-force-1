@@ -7,6 +7,7 @@ use DateTime;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 class TaskFilter extends Model
 {
@@ -83,15 +84,11 @@ class TaskFilter extends Model
         }
 
         if ($this->period) {
-            $date = new DateTime();
-            $dateCurrent = new DateTime('now');
-            $date->sub(new DateInterval("P" . $this->period . "D"));
-            $query->andWhere(['>=', 'dt_add', $date->format('Y-m-d')]);
-            $query->andWhere(['<=', 'dt_add', $dateCurrent->format('Y-m-d')]);
+            $query->andWhere(['>=', 'dt_add', new Expression('NOW()-INTERVAL ' . $this->period . ' DAY')]);
         }
 
         if ($this->title) {
-            $query->andWhere(['name' => $this->title]);
+            $query->andWhere(['like', 'name', $this->title]);
         }
         return $query->all();
     }
