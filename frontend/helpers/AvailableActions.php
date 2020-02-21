@@ -9,6 +9,11 @@ use frontend\components\action\FailAction;
 use frontend\components\action\FinishAction;
 use frontend\components\action\RespondAction;
 
+/**
+ * Class AvailableActions
+ *
+ * @package frontend\helpers
+ */
 class AvailableActions
 {
 

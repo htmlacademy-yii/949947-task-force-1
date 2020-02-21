@@ -1,6 +1,6 @@
 <?php
 
-namespace Academy\classes\exception;
+namespace frontend\exception;
 
 class InvalidActionException extends \Exception
 {
