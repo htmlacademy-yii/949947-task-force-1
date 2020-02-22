@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -18,6 +19,7 @@ use yii\db\ActiveRecord;
  * @property string $latitude
  * @property string $longitude
  * @property string $dt_add
+ * @property TaskInfo $taskInfo
  */
 class Users extends ActiveRecord
 {
@@ -62,5 +64,26 @@ class Users extends ActiveRecord
             'longitude' => 'Longitude',
             'dt_add' => 'Dt Add',
         ];
+    }
+
+    /**
+     * Связь с таблицой Заданий
+     *
+     * @return ActiveQuery
+     */
+    public function getTaskInfo()
+    {
+        return $this->hasOne(TaskInfo::class, ['customer_id' => 'id']);
+    }
+
+    /**
+     * Возвращает данные заказчика
+     *
+     * @param $id
+     * @return array|ActiveRecord|null
+     */
+    public static function getCostumer($id): ActiveRecord
+    {
+        return self::find()->with('taskInfo')->where(['id' => (int)$id])->one();
     }
 }

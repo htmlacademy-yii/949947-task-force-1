@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -14,6 +15,8 @@ use yii\db\ActiveRecord;
  * @property string $description
  * @property string $dt_add
  * @property int|null $rate
+ * @property Users $user
+ * @property TaskInfo $taskInfo
  */
 class Replies extends ActiveRecord
 {
@@ -51,5 +54,36 @@ class Replies extends ActiveRecord
             'dt_add' => 'Dt Add',
             'rate' => 'Rate',
         ];
+    }
+
+    /**
+     * связь с таблицей Users
+     *
+     * @return ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(Users::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * связь с таблицей taskInfo
+     *
+     * @return ActiveQuery
+     */
+    public function getTaskInfo()
+    {
+        return $this->hasOne(TaskInfo::class, ['id' => 'task_id']);
+    }
+
+    /**
+     * Возвращает отклики на текущее задание
+     *
+     * @param $id
+     * @return array|ActiveRecord[]
+     */
+    public static function getReplies($id): array
+    {
+        return self::find()->joinWith('user')->joinWith('taskInfo')->where(['TaskInfo.id' => $id])->all();
     }
 }

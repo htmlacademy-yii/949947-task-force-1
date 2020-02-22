@@ -37,7 +37,23 @@ class TasksController extends Controller
             $filterModel->load(Yii::$app->request->post());
         }
         $taskQuery = $filterModel->tasksFilter();
+
         return $this->render('browse', ['tasks' => $taskQuery, 'filter' => $filterModel]);
+    }
+
+    /**
+     * Действия для показа подробной информации задания
+     *
+     * @param $id
+     * @return string
+     */
+    public function actionView($id)
+    {
+        $task = TaskInfo::getTaskInfo($id);
+        $replies = Replies::getReplies($id);
+        $costumer = Users::getCostumer($id);
+
+        return $this->render('view', ['task' => $task, 'replies' => $replies, 'costumer' => $costumer]);
     }
 }
 

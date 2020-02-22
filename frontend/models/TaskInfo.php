@@ -78,4 +78,15 @@ class TaskInfo extends ActiveRecord
     {
         return $this->hasOne(Categories::class, ['id' => 'category_id']);
     }
+
+    /**
+     * Возвращает информацию о задание
+     *
+     * @param $id
+     * @return array|ActiveRecord|null
+     */
+    public static function getTaskInfo($id): ActiveRecord
+    {
+        return self::find()->With('category')->where(['id' => (int)$id])->one();
+    }
 }
