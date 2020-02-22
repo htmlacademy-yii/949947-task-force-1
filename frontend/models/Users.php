@@ -71,7 +71,7 @@ class Users extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getTaskInfo()
+    public function getTaskInfo(): ?ActiveQuery
     {
         return $this->hasOne(TaskInfo::class, ['customer_id' => 'id']);
     }
@@ -80,9 +80,9 @@ class Users extends ActiveRecord
      * Возвращает данные заказчика
      *
      * @param $id
-     * @return array|ActiveRecord|null
+     * @return ActiveRecord|null
      */
-    public static function getCostumer($id): ActiveRecord
+    public static function getCostumer($id): ?ActiveRecord
     {
         return self::find()->with('taskInfo')->where(['id' => (int)$id])->one();
     }
