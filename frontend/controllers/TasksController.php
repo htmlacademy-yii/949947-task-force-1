@@ -55,7 +55,7 @@ class TasksController extends Controller
         $replies = Replies::getReplies($id);
         $costumer = Users::getCostumer($id);
 
-        if (!$task or $costumer) {
+        if (!$task or !$costumer) {
             throw new NotFoundHttpException("Страница не найдена!");
 //            Yii::$app->response->redirect(Url::to('/404'));//Редикет на 404 страницу
         }
