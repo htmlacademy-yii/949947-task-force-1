@@ -11,6 +11,7 @@ use frontend\models\TaskFilter;
 use frontend\models\Users;
 use Yii;
 use yii\db\Query;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -46,12 +47,18 @@ class TasksController extends Controller
      *
      * @param $id
      * @return string
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
         $task = TaskInfo::getTaskInfo($id);
         $replies = Replies::getReplies($id);
         $costumer = Users::getCostumer($id);
+
+        if (!$task or $costumer) {
+            throw new NotFoundHttpException("Страница не найдена!");
+//            Yii::$app->response->redirect(Url::to('/404'));//Редикет на 404 страницу
+        }
 
         return $this->render('view', ['task' => $task, 'replies' => $replies, 'costumer' => $costumer]);
     }
