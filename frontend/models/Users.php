@@ -69,7 +69,7 @@ class Users extends ActiveRecord
     /**
      * Связь с таблицой Заданий
      *
-     * @return ActiveQuery
+     * @return ActiveQuery|null
      */
     public function getTaskInfo(): ?ActiveQuery
     {

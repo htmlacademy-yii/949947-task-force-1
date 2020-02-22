@@ -80,7 +80,7 @@ class Replies extends ActiveRecord
      * Возвращает отклики на текущее задание
      *
      * @param $id
-     * @return array|ActiveRecord[]
+     * @return array
      */
     public static function getReplies($id): array
     {
