@@ -24,6 +24,8 @@ use yii\db\Query;
  * @property string $latitude
  * @property string $longitude
  * @property Categories $category
+ * @property Users $customer
+ * @property Replies $replies
  */
 class TaskInfo extends ActiveRecord
 {
@@ -80,13 +82,22 @@ class TaskInfo extends ActiveRecord
     }
 
     /**
-     * Возвращает информацию о задание
+     * связь с таблицей откликов
      *
-     * @param $id
-     * @return array|ActiveRecord|null
+     * @return ActiveQuery
      */
-    public static function getTaskInfo($id): ?ActiveRecord
+    public function getReplies()
     {
-        return self::find()->With('category')->where(['id' => (int)$id])->one();
+        return $this->hasMany(Replies::class, ['task_id' => 'id']);
+    }
+
+    /**
+     * Связь с таблицой пользователей
+     *
+     * @return ActiveQuery|null
+     */
+    public function getCustomer(): ?ActiveQuery
+    {
+        return $this->hasOne(Users::class, ['id' => 'customer_id']);
     }
 }

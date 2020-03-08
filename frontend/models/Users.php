@@ -65,25 +65,4 @@ class Users extends ActiveRecord
             'dt_add' => 'Dt Add',
         ];
     }
-
-    /**
-     * Связь с таблицой Заданий
-     *
-     * @return ActiveQuery|null
-     */
-    public function getTaskInfo(): ?ActiveQuery
-    {
-        return $this->hasOne(TaskInfo::class, ['customer_id' => 'id']);
-    }
-
-    /**
-     * Возвращает данные заказчика
-     *
-     * @param $id
-     * @return ActiveRecord|null
-     */
-    public static function getCostumer($id): ?ActiveRecord
-    {
-        return self::find()->with('taskInfo')->where(['id' => (int)$id])->one();
-    }
 }

@@ -51,16 +51,14 @@ class TasksController extends Controller
      */
     public function actionView($id)
     {
-        $task = TaskInfo::getTaskInfo($id);
-        $replies = Replies::getReplies($id);
-        $costumer = Users::getCostumer($id);
+        $task = TaskInfo::find()->with(['category', 'customer', 'replies.user'])->where(['id' => (int)$id])->one();
 
-        if (!$task or !$costumer) {
+        if (!$task) {
             throw new NotFoundHttpException("Страница не найдена!");
 //            Yii::$app->response->redirect(Url::to('/404'));//Редикет на 404 страницу
         }
 
-        return $this->render('view', ['task' => $task, 'replies' => $replies, 'costumer' => $costumer]);
+        return $this->render('view', ['task' => $task]);
     }
 }
 

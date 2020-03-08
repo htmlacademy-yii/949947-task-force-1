@@ -57,33 +57,12 @@ class Replies extends ActiveRecord
     }
 
     /**
-     * связь с таблицей Users
+     * Связь с таблицой пользователей
      *
-     * @return ActiveQuery
+     * @return ActiveQuery|null
      */
-    public function getUser()
+    public function getUser(): ?ActiveQuery
     {
         return $this->hasOne(Users::class, ['id' => 'user_id']);
-    }
-
-    /**
-     * связь с таблицей taskInfo
-     *
-     * @return ActiveQuery
-     */
-    public function getTaskInfo()
-    {
-        return $this->hasOne(TaskInfo::class, ['id' => 'task_id']);
-    }
-
-    /**
-     * Возвращает отклики на текущее задание
-     *
-     * @param $id
-     * @return array
-     */
-    public static function getReplies($id): array
-    {
-        return self::find()->joinWith('user')->joinWith('taskInfo')->where(['TaskInfo.id' => $id])->all();
     }
 }
