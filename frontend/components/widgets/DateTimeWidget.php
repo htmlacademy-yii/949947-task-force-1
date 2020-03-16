@@ -29,36 +29,12 @@ class DateTimeWidget extends Widget
     {
         $addDateTime = new DateTime($this->time);
         $diff = $addDateTime->diff(new DateTime());
-        if ($diff->y > 0) {
-            return $this->render('DateView', [
-                'time' => floor($diff->y),
-                'name' => PluralForm::dateForm(floor($diff->y), 'год', 'года', 'лет'),
-                'class' => $this->class,
-                'prefix' => $this->prefix,
-            ]);
-        } elseif ($diff->m > 0 && $diff->m <= 12) {
-            return $this->render('DateView', [
-                'time' => floor($diff->m),
-                'name' => PluralForm::dateForm(floor($diff->m), 'месяц', 'месяца', 'месяцев'),
-                'class' => $this->class,
-                'prefix' => $this->prefix,
-            ]);
-        } elseif ($diff->d > 0 && $diff->d <= 30) {
-            return $this->render('DateView', [
-                'time' => floor($diff->d),
-                'name' => PluralForm::dateForm(floor($diff->m), 'день', 'дня', 'дней'),
-                'class' => $this->class,
-                'prefix' => $this->prefix,
-            ]);
-        } else {
-            return $this->render('DateView', [
-                'time' => floor($diff->i),
-                'name' => PluralForm::dateForm(floor($diff->m), 'минута', 'минуты', 'минут'),
-                'class' => $this->class,
-                'prefix' => $this->prefix,
-            ]);
-        }
 
+        return $this->render('DateView', [
+            'diff' => $diff,
+            'class' => $this->class,
+            'prefix' => $this->prefix,
+        ]);
     }
 }
 
