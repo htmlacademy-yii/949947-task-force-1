@@ -16,11 +16,13 @@ class PluralForm
     public static function dateForm(float $time, string $option1, string $option2, string $option3)
     {
         if (($time % 10) === 1) {
+
             return $option1;
+
         } elseif (($time % 10) > 1 && ($time % 10) < 5) {
+
             return $option2;
-        } else {
-            return $option3;
         }
+        return $option3;
     }
 }
