@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -18,6 +19,7 @@ use yii\db\ActiveRecord;
  * @property string $latitude
  * @property string $longitude
  * @property string $dt_add
+ * @property TaskInfo $taskInfo
  */
 class Users extends ActiveRecord
 {
