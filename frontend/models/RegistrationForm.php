@@ -2,7 +2,9 @@
 
 namespace frontend\models;
 
+use Yii;
 use yii\base\Model;
+use yii\db\Exception;
 
 /**
  * модель формы регистрации
@@ -52,5 +54,19 @@ class RegistrationForm extends Model
             'name_user' => 'Name User',
             'name_city' => 'Name City'
         ];
+    }
+
+    /**
+     * Функция добавлеяет нового пользователя в БД
+     *
+     * @throws \yii\base\Exception
+     */
+    public function addUser()
+    {
+        $user = new Users();
+        $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+        $user->attributes = $this->attributes;
+
+        return $user->save();
     }
 }

@@ -25,23 +25,15 @@ class RegistrationController extends Controller
     public function actionSignup()
     {
         $registration = new RegistrationForm();
-        $user = new Users();
 
         if (Yii::$app->request->isPost) {
             $registration->load(Yii::$app->request->post());
-            if (!$registration->validate()) {
-                $errors = $registration->getErrors();
-            } else {
-                $registration['password'] = Yii::$app->getSecurity()->generatePasswordHash($registration['password']);
-                $transaction = Yii::$app->db->beginTransaction();
-                $user->attributes = $registration->attributes;
-                if (!$user->save()) {
-                    $transaction->rollBack();
-                }
-                $transaction->commit();
 
-                return $this->goHome();
+            if ($registration->validate() && $registration->addUser()) {
+                $this->goHome();
             }
+            
+            $errors = $registration->getErrors();
         }
         return $this->render('signup', ['registration' => $registration, 'errors' => $errors]);
     }
