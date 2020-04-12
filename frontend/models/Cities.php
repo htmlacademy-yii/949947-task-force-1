@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "cities".
@@ -28,20 +29,33 @@ class Cities extends ActiveRecord
     public function rules()
     {
         return [
-            [['latitude', 'longitude'], 'required'],
-            [['latitude', 'longitude'], 'string', 'max' => 255],
+            [['latitude', 'longitude', 'name_city'], 'required'],
+            [['latitude', 'longitude', 'name_city'], 'string', 'max' => 255],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
             'latitude' => 'Latitude',
             'longitude' => 'Longitude',
+            'name_city' => 'Name City',
         ];
+    }
+
+    /**
+     * Возвращает список возможных городов
+     *
+     * @return array
+     */
+    public static function getCities(): array
+    {
+        $cities = self::find()->select(['id', 'name_city'])->all();
+
+        return $cities ? ArrayHelper::map($cities, 'id', 'name_city') : [];
     }
 }
