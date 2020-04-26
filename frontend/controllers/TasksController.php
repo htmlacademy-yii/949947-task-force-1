@@ -2,34 +2,26 @@
 
 namespace frontend\controllers;
 
-use DateInterval;
-use DateTime;
-use frontend\models\Categories;
-use frontend\models\Replies;
+use Exception;
 use frontend\models\TaskInfo;
 use frontend\models\TaskFilter;
-use frontend\models\Users;
 use Yii;
-use yii\db\Query;
-use yii\helpers\Url;
-use yii\web\Controller;
+use yii\data\Pagination;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
 
 
 /**
  * Class TasksController
- *
  * @package frontend\controllers
  */
-class TasksController extends Controller
+class TasksController extends SecuredController
 {
 
     /**
-     * Displays homepage.
+     * действие для показа страницы списка заданий
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function actionBrowse()
     {
@@ -37,9 +29,14 @@ class TasksController extends Controller
         if (Yii::$app->request->isPost) {
             $filterModel->load(Yii::$app->request->post());
         }
+
         $taskQuery = $filterModel->tasksFilter();
 
-        return $this->render('browse', ['tasks' => $taskQuery, 'filter' => $filterModel]);
+        $pages = new Pagination(['totalCount' => $taskQuery->count(), 'pageSize' => 5]);//пагинация
+        $model = $taskQuery->offset($pages->offset)->limit($pages->limit)->all();
+
+
+        return $this->render('browse', ['tasks' => $model, 'filter' => $filterModel, 'pages' => $pages]);
     }
 
     /**
@@ -55,7 +52,6 @@ class TasksController extends Controller
 
         if (!$task) {
             throw new NotFoundHttpException("Страница не найдена!");
-//            Yii::$app->response->redirect(Url::to('/404'));//Редикет на 404 страницу
         }
 
         return $this->render('view', ['task' => $task]);

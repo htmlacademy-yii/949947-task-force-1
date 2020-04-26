@@ -8,10 +8,13 @@ use yii\web\View;
 use yii\widgets\ActiveForm;
 use frontend\models\TaskFilter;
 use yii\helpers\Html;
+use yii\widgets\LinkPager;
 
 /**
  * @var View $this
  * @var TaskInfo[] $tasks
+ * @var TaskInfo $pages
+ * @var TaskInfo $filter
  */
 
 $this->title = 'TaskForce';
@@ -42,14 +45,19 @@ $this->title = 'TaskForce';
         <?php endforeach; ?>
     </div>
     <div class="new-task__pagination">
-        <ul class="new-task__pagination-list">
-            <li class="pagination__item"><a href="#"></a></li>
-            <li class="pagination__item pagination__item--current">
-                <a>1</a></li>
-            <li class="pagination__item"><a href="#">2</a></li>
-            <li class="pagination__item"><a href="#">3</a></li>
-            <li class="pagination__item"><a href="#"></a></li>
-        </ul>
+        <?= LinkPager::widget([
+            'pagination' => $pages,
+            'options' => [
+                'class' => 'new-task__pagination-list',
+            ],
+            'activePageCssClass' => 'pagination__item--current',
+            'pageCssClass' => 'pagination__item',
+            'prevPageCssClass' => 'pagination__item',
+            'nextPageCssClass' => 'pagination__item',
+            'nextPageLabel' => '⠀',
+            'prevPageLabel' => '⠀',
+            'hideOnSinglePage' => true
+        ]) ?>
     </div>
 </section>
 <section class="search-task">
@@ -58,7 +66,7 @@ $this->title = 'TaskForce';
         <fieldset class="search-task__categories">
             <legend>Категории</legend>
 
-            <?= $form->field($filter, 'categories')
+            <?= $form->field($filter, 'category')
                 ->checkboxList(Categories::getCategoriesList(), [
                     'item' => function ($index, $label, $name, $checked, $value) {
                         $id = "{$index}";
@@ -111,10 +119,10 @@ $this->title = 'TaskForce';
             'options' => ['tag' => false]
         ])
             ->textInput(['class' => 'input-middle input'])
-            ->label('Поиск по названию', ['class' => 'search-task__name']);
+            ->label('Поиск по названию', ['class' => 'search-task__name']); ?>
 
-        echo Html::submitButton('Искать', ['class' => 'button'])
-        ?>
+        <?= Html::submitButton('Искать', ['class' => 'button']) ?>
+
         <?php ActiveForm::end(); ?>
     </div>
 </section>
