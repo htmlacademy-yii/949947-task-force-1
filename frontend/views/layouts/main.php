@@ -1,16 +1,16 @@
 <?php
-/* @var $this \yii\web\View */
+/* @var $this View */
 
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+use yii\helpers\Url;
+use yii\web\View;
 use frontend\assets\AppAsset;
-use common\widgets\Alert;
 
 AppAsset::register($this);
+
+$user = !Yii::$app->user->isGuest ? Yii::$app->user->identity : null;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -85,13 +85,13 @@ AppAsset::register($this);
             <div class="header__nav">
                 <ul class="header-nav__list site-list">
                     <li class="site-list__item">
-                        <a href="#">Задания</a>
+                        <a href="<?= Url::to(['/tasks']); ?>">Задания</a>
                     </li>
                     <li class="site-list__item">
                         <a href="#">Исполнители</a>
                     </li>
                     <li class="site-list__item site-list__item--active">
-                        <a href="#">Создать задание</a>
+                        <a href="<?= Url::to(['/create']) ?>">Создать задание</a>
                     </li>
                     <li class="site-list__item">
                         <a href="#">Мой профиль</a>
@@ -130,18 +130,20 @@ AppAsset::register($this);
                              width="43" height="44"
                              alt="Аватар пользователя">
                     </a>
-                    <span class="header__account-name">Василий</span>
+                    <span class="header__account-name">
+                 <?= $user->name_user ?>
+             </span>
                 </div>
                 <div class="account__pop-up">
                     <ul class="account__pop-up-list">
                         <li>
-                            <a href="#">Мои задания</a>
+                            <a href="<?= Url::toRoute("/mylist") ?>">Мои задания</a>
                         </li>
                         <li>
                             <a href="#">Настройки</a>
                         </li>
                         <li>
-                            <a href="">Выход</a>
+                            <a href="<?= Url::to(['landing/logout']); ?>">Выход</a>
                         </li>
                     </ul>
                 </div>
@@ -150,7 +152,7 @@ AppAsset::register($this);
     </header>
     <main class="page-main">
         <div class="main-container page-container">
-            <?php print $content ?>
+            <?= $content ?>
         </div>
     </main>
     <footer class="page-footer">
@@ -190,7 +192,7 @@ AppAsset::register($this);
             <div class="page-footer__copyright">
                 <a>
                     <img class="copyright-logo"
-                         src="./img/academy-logo.png"
+                         src="/img/academy-logo.png"
                          width="185" height="63"
                          alt="Логотип HTML Academy">
                 </a>
@@ -198,7 +200,6 @@ AppAsset::register($this);
         </div>
     </footer>
 </div>
-
 <?php $this->endBody() ?>
 </body>
 </html>

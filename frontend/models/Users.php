@@ -2,7 +2,9 @@
 
 namespace frontend\models;
 
+use Yii;
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "users".
@@ -18,7 +20,7 @@ use yii\db\ActiveRecord;
  * @property string $longitude
  * @property string $dt_add
  */
-class Users extends ActiveRecord
+class Users extends ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -66,5 +68,58 @@ class Users extends ActiveRecord
             'dt_add_user' => 'Dt Add User',
             'name_city' => 'Name City'
         ];
+    }
+
+    /**
+     * @param mixed $token
+     * @param null $type
+     * @return void|IdentityInterface|null
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // TODO: Implement findIdentityByAccessToken() method.
+    }
+
+    /**
+     * @return string|void
+     */
+    public function getAuthKey()
+    {
+        // TODO: Implement getAuthKey() method.
+    }
+
+    /**
+     * @param string $authKey
+     * @return bool|void
+     */
+    public function validateAuthKey($authKey)
+    {
+        // TODO: Implement validateAuthKey() method.
+    }
+
+    /**
+     * @param int|string $id
+     * @return IdentityInterface
+     */
+    public static function findIdentity($id): ?IdentityInterface
+    {
+        return self::findOne($id);
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * @param $password
+     * @return bool
+     */
+    public function validatePassword($password): bool
+    {
+        return \Yii::$app->security->validatePassword($password, $this->password);
     }
 }

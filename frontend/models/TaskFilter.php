@@ -16,7 +16,7 @@ class TaskFilter extends Model
     const PERIOD_WEEK = 7;
     const PERIOD_MONTH = 30;
 
-    public $categories;
+    public $category;
     public $withoutExecutor;
     public $isRemote;
     public $period;
@@ -29,7 +29,7 @@ class TaskFilter extends Model
     {
         return
             [
-                'categories' => 'категории',
+                'category' => 'категории',
                 'withoutExecutor' => 'без исполителя',
                 'isRemote' => 'Удаленная работа',
                 'period' => 'Период',
@@ -43,7 +43,7 @@ class TaskFilter extends Model
     public function rules(): array
     {
         return [
-            [['categories', 'withoutExecutor', 'isRemote', 'period', 'title'], 'safe']
+            [['category', 'withoutExecutor', 'isRemote', 'period', 'title'], 'safe']
         ];
     }
 
@@ -64,15 +64,15 @@ class TaskFilter extends Model
     /**
      * фильтрует задания
      *
-     * @return array
+     * @return ActiveQuery
      * @throws \Exception
      */
-    public function tasksFilter(): array
+    public function tasksFilter(): ActiveQuery
     {
         $query = TaskInfo::find()->joinWith('category');
-        if ($this->categories) {
-            foreach ($this->categories as $categories) {
-                $query->orWhere(['IN', 'categories.id', $categories]);
+        if ($this->category) {
+            foreach ($this->category as $category) {
+                $query->orWhere(['IN', 'categories.id', $category]);
             }
         }
         if ($this->withoutExecutor) {
@@ -90,6 +90,7 @@ class TaskFilter extends Model
         if ($this->title) {
             $query->andWhere(['like', 'name', $this->title]);
         }
-        return $query->all();
+
+        return $query->orderBy(['dt_add' => SORT_DESC])->andWhere(['status' => Task::STATUS_NEW]);
     }
 }
